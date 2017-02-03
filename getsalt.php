@@ -58,29 +58,9 @@ function saveSalt($db, $salt, $name)
 }
 
 
-function getPepper($db, $name)
-{
-    // Check if user exists
-    $stmt = $db->prepare("SELECT `user_pepper` FROM `".USERS_TABLE."` WHERE user_name = ?");
-    try
-    {
-        $stmt->execute(array($name));
-    } catch(PDOException $e)
-    {
-        return false;
-    }
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if(!$result) return false;
-
-    return $result['user_pepper'];
-}
-
-
 $usalt = '';
 $usalt = generateSalt();
 
-if(!saveSalt($db, $usalt, $name)) {
-    // Generates a fake data, so that it can not be known that the user name exists
-    exit(json_encode(array('pepper' => sha1(generateSalt()), 'salt' => sha1($usalt))));
-}
-echo json_encode(array('pepper' => getPepper($db, $name), 'salt' => sha1($usalt)));
+saveSalt($db, $usalt, $name);
+
+exit(json_encode(array('salt' => sha1($usalt))));

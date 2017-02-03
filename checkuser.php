@@ -10,12 +10,12 @@ function checkUser($db)
     if(!isset($_COOKIE[session_name()]))
         return false;
 
-    $_SESSION['attempt'] = !isset($_SESSION['attempt']) ? 0 : $_SESSION['attempt']++;
+    !isset($_SESSION['attempt']) ? $_SESSION['attempt'] = 1 : $_SESSION['attempt']++;
 
     $stmt = $db->prepare("SELECT
-                                 `salt`, `user_pass`, `user_pepper`, `a_date`
+                                 `".AUTH_TABLE."`.`salt`, `".USERS_TABLE."`.`user_pass`
                              FROM
-                                 ".AUTH_TABLE.", ".USERS_TABLE."
+                                 `".AUTH_TABLE."`, `".USERS_TABLE."`
                             WHERE
                                  ".AUTH_TABLE.".user_name = ?
                               AND

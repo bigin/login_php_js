@@ -16,7 +16,7 @@ if(isset($_GET['logout']))
         <title>Login Form</title>
         <style type="text/css">
         body{text-align:center;font-family:"Helvetica Neue",Helvetica,FreeSans,Arial,Verdana,sans-serif;font-size:100%;
-			-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#555;}
+            -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:#555;}
         section{max-width:400px;margin:auto;text-align:left;}
         fieldset{margin:40px 0;padding:20px;font-weight:bold;border:solid 1px #8e8e8e;border-top-color:#a3a3a3;
             border-left-color:#a3a3a3;border-radius:4px 4px 4px 4px;background:#fbfbf3;box-sizing:border-box}
@@ -26,8 +26,8 @@ if(isset($_GET['logout']))
             border-top-color:#8e8e8e;
             border-left-color:#8e8e8e;font-size:0.8em;box-sizing:border-box}
         input[type=submit]{margin-top:10px;background:#369988;border:solid 1px #06312b;border-top-color: #066a64;
-			border-left-color:#06635d;font-weight:bold;font-size:1em;color:#fff;padding:11px 20px 11px 20px;
-			display:block;margin: 0;}
+            border-left-color:#06635d;font-weight:bold;font-size:1em;color:#fff;padding:11px 20px 11px 20px;
+            display:block;margin: 0;}
         input[type=submit]:hover{cursor:pointer;background:#37a594;}
         .errmess {color:red;}
         </style>
@@ -41,8 +41,9 @@ if(isset($_GET['logout']))
             var pass = $('form').find('input[name=pass]');
             var hash = $('form').find('input[name=hash]');
             $.getJSON("getsalt.php?name=" + name.val(), function(data, status) {
-                if(data.pepper != undefined && data.salt != undefined) {
-                    var hashed = Sha1.hash(Sha1.hash(pass.val() + data.pepper.toString()) + data.salt.toString());
+                if(data.salt != undefined) {
+                    console.log(data.salt.toString());
+                    var hashed = Sha1.hash(Sha1.hash(pass.val()) + data.salt.toString());
                     hash.val(hashed);
                     pass.val('');
                     $('form').submit();
@@ -59,7 +60,7 @@ if(isset($_GET['logout']))
 
     <!-- Login form Section -->
 <?php else:
-    if(!$ret && isset($_SESSION['attempt']) && $_SESSION['attempt'] >= 5)
+    if(!$ret && isset($_SESSION['attempt']) && $_SESSION['attempt'] >= MAXIMUM_ATTEMPTS)
         echo '<p class="errmess">'.
             'Error: No more attempts allowed!<br />Delete your cookies and try again ...</p>';
     else if(isset($_POST['pass']) && !$ret && isset($_SESSION['attempt']))
