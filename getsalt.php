@@ -25,10 +25,10 @@ function generateSalt()
 function saveSalt($db, $salt, $name)
 {
     // Delete expired authorizations
-    $db->exec("DELETE FROM `".AUTH_TABLE."` WHERE (t_point < DATE_SUB(NOW(), INTERVAL 1 MINUTE))");
+    $db->exec("DELETE FROM `".AUTH_TABLE."` WHERE (`t_point` < DATE_SUB(NOW(), INTERVAL 1 MINUTE))");
 
     // Check if user exists
-    $stmt = $db->prepare("SELECT COUNT(*) FROM `".USERS_TABLE."` WHERE user_name = ?");
+    $stmt = $db->prepare("SELECT COUNT(*) FROM `".USERS_TABLE."` WHERE `user_name` = ?");
     try
     {
         $stmt->execute(array($name));

@@ -42,7 +42,6 @@ if(isset($_GET['logout']))
             var hash = $('form').find('input[name=hash]');
             $.getJSON("getsalt.php?name=" + name.val(), function(data, status) {
                 if(data.salt != undefined) {
-                    console.log(data.salt.toString());
                     var hashed = Sha1.hash(Sha1.hash(pass.val()) + data.salt.toString());
                     hash.val(hashed);
                     pass.val('');

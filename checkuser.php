@@ -17,11 +17,11 @@ function checkUser($db)
                              FROM
                                  `".AUTH_TABLE."`, `".USERS_TABLE."`
                             WHERE
-                                 ".AUTH_TABLE.".user_name = ?
+                                 `".AUTH_TABLE."`.`user_name` = ?
                               AND
-                                 ".USERS_TABLE.".user_name = ?
+                                 `".USERS_TABLE."`.`user_name` = ?
                               AND
-                                 (t_point > DATE_SUB(NOW(),INTERVAL 1 MINUTE))");
+                                 (`".AUTH_TABLE."`.`t_point` > DATE_SUB(NOW(),INTERVAL 1 MINUTE))");
 
     try
     {
@@ -35,7 +35,7 @@ function checkUser($db)
     if(empty($result))
         return false;
 
-    $stmt = $db->prepare("DELETE FROM `".AUTH_TABLE."` WHERE user_name = ?");
+    $stmt = $db->prepare("DELETE FROM `".AUTH_TABLE."` WHERE `user_name` = ?");
 
     try
     {
@@ -52,11 +52,11 @@ function checkUser($db)
 
     // Login successful
     $stmt = $db->prepare("UPDATE
-                                 ".USERS_TABLE."
+                                 `".USERS_TABLE."`
                              SET
-                                 last_login=NOW()
+                                 `last_login`=NOW()
                            WHERE
-                                 user_name = ?");
+                                 `user_name` = ?");
 
     try
     {
